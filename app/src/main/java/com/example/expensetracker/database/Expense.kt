@@ -8,8 +8,8 @@ import java.util.UUID
 @Entity
 data class Expense (
     @PrimaryKey val id: UUID,
+    val title: String,
     val date: Date,
     val amount: Double,
     val type: String
-
 )

@@ -10,4 +10,8 @@ import com.example.expensetracker.database.DateConverter
 @TypeConverters(DateConverter::class)
 abstract class ExpenseDatabase : RoomDatabase() {
     abstract fun expenseDao(): ExpenseDao
+    companion object {
+        @Volatile
+        private var instance: ExpenseDatabase? = null
+    }
 }
