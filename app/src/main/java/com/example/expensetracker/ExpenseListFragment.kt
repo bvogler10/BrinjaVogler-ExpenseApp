@@ -36,7 +36,6 @@ class ExpenseListFragment: Fragment() {
     ): View? {
         _binding = FragmentExpenseListBinding.inflate(inflater, container, false)
         binding.ExpenseRecyclerView.layoutManager = LinearLayoutManager(context)
-        val adapter = ExpenseListAdapter(emptyList())
 
         val categorySpinner = binding.ExpenseCategories
         val categoryList = listOf("All Expenses","Food", "Entertainment", "Housing", "Utilities", "Fuel", "Automotive", "Misc")
@@ -72,6 +71,22 @@ class ExpenseListFragment: Fragment() {
             transaction.replace(R.id.fragment_container, newExpenseFragment)
             transaction.addToBackStack(null)
             transaction.commit()
+        }
+        val adapter = ExpenseListAdapter(emptyList()) { expense ->
+            val bundle = Bundle().apply {
+                putString("id", expense.id.toString())
+                putString("title", expense.title)
+                putDouble("amount", expense.amount)
+                putString("date", expense.date.toString())
+                putString("type", expense.type)
+            }
+            val fragment = EditExpenseFragment().apply {
+                arguments = bundle
+            }
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit()
         }
         binding.ExpenseRecyclerView.adapter = adapter
         expenseListViewModel.expenses.observe(viewLifecycleOwner) { expenseList ->

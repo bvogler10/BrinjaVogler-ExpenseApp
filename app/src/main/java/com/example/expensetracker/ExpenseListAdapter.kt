@@ -8,7 +8,7 @@ import com.example.expensetracker.databinding.ListItemExpenseBinding
 
 class ExpenseListAdapter(
     private var expenses: List<Expense>,
-    //private val onItemClick: (Expense) -> Unit
+    private val onItemClick: (Expense) -> Unit
     ) :
     RecyclerView.Adapter<ExpenseListAdapter.ExpenseHolder>() {
 
@@ -40,7 +40,7 @@ class ExpenseListAdapter(
             itemView.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    //(expenses[position])
+                    onItemClick(expenses[position])
                 }
             }
         }
