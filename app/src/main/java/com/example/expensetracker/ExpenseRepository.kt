@@ -31,13 +31,11 @@ class ExpenseRepository constructor(
 
     suspend fun getExpense(id: UUID): Expense = database.expenseDao().getExpense(id)
 
+    suspend fun updateExpenseTitle(id: UUID, newTitle: String) = database.expenseDao().updateExpenseTitle(id, newTitle)
+    suspend fun updateExpenseAmount(id: UUID, newAmount: Double) = database.expenseDao().updateExpenseAmount(id, newAmount)
+    suspend fun updateExpenseType(id: UUID, newType: String) = database.expenseDao().updateExpenseType(id, newType)
     suspend fun getExpensesByCategory(category: String): List<Expense> = database.expenseDao().getExpensesByCategory(category)
-
-    fun updateExpense(expense: Expense) {
-        coroutineScope.launch {
-            database.expenseDao().updateExpense(expense)
-        }
-    }
+    suspend fun deleteExpense(id: UUID) = database.expenseDao().deleteExpense(id)
 
     companion object {
         private var INSTANCE: ExpenseRepository? = null

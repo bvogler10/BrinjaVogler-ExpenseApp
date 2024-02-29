@@ -10,10 +10,13 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.expensetracker.database.Expense
 import com.example.expensetracker.databinding.FragmentEditExpenseBinding
 import com.example.expensetracker.databinding.FragmentNewExpenseBinding
+import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
 import java.util.UUID
@@ -38,6 +41,7 @@ class EditExpenseFragment: Fragment() {
         val newExpenseType = binding.editTypeSelector
         val newAmount = binding.root.findViewById<EditText>(R.id.editExpenseAmount)
         val updateExpense = binding.root.findViewById<Button>(R.id.updateExpense)
+        val deleteExpense = binding.root.findViewById<Button>(R.id.deleteExpenseButton)
 
         backButton.setOnClickListener {
             val listExpenseFragment = ExpenseListFragment()
@@ -46,6 +50,7 @@ class EditExpenseFragment: Fragment() {
             transaction.addToBackStack(null)
             transaction.commit()
         }
+
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -82,9 +87,6 @@ class EditExpenseFragment: Fragment() {
         view.findViewById<EditText>(R.id.editTitle).hint = expenseTitle
         view.findViewById<EditText>(R.id.editExpenseAmount).hint = expenseAmount.toString()
 
-        binding.editTitle.setOnClickListener {
-            expenseTitle = binding.editTitle.text.toString()
-        }
         binding.editTypeSelector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -98,12 +100,44 @@ class EditExpenseFragment: Fragment() {
 
             }
         }
-        binding.editExpenseAmount.setOnClickListener {
-            expenseAmount = binding.editExpenseAmount.text.toString().toDouble()
+        binding.deleteExpenseButton.setOnClickListener {
+            val uuid: UUID = UUID.fromString(expenseId)
+            lifecycleScope.launch {
+                expenseRepository.deleteExpense(uuid)
+            }
+            val listExpenseFragment = ExpenseListFragment()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragment_container, listExpenseFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
         }
+
         binding.updateExpense.setOnClickListener {
             val expenseId = arguments?.getString("id")
             val uuid: UUID = UUID.fromString(expenseId)
+            expenseTitle = binding.editTitle.text.toString()
+            expenseAmount = binding.editExpenseAmount.text.toString().toDouble()
+
+            if (expenseAmount != null) {
+                lifecycleScope.launch {
+                    expenseRepository.updateExpenseAmount(uuid, expenseAmount!!)
+                }
+                if (expenseTitle != null) {
+                    lifecycleScope.launch {
+                        expenseRepository.updateExpenseTitle(uuid, expenseTitle!!)
+                    }
+                }
+                lifecycleScope.launch {
+                    expenseRepository.updateExpenseType(uuid, expenseType!!)
+                }
+                val listExpenseFragment = ExpenseListFragment()
+                val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.fragment_container, listExpenseFragment)
+                transaction.addToBackStack(null)
+                transaction.commit()
+            } else {
+                Toast.makeText(requireContext(), "Please make sure all inputs are valid!", Toast.LENGTH_LONG).show()
+            }
         }
     }
 }
