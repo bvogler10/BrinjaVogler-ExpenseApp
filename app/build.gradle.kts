@@ -34,6 +34,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -41,6 +44,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
+    implementation ("androidx.databinding:databinding-runtime:7.0.2")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     val room_version = "2.6.1"
     implementation("androidx.room:room-runtime:$room_version")
