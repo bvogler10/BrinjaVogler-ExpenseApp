@@ -16,15 +16,5 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val expenseRepository = ExpenseRepository(applicationContext)
-
-        val insertExpense: Button = findViewById(R.id.insertExpense)
-        insertExpense.setOnClickListener {
-            GlobalScope.launch {
-                val expense = Expense(UUID.randomUUID(), "Test Expense", Date(), 50.0, "Food")
-                expenseRepository.insertExpense(expense)
-            }
-        }
     }
 }
