@@ -53,10 +53,10 @@ class ExpenseListFragment: Fragment() {
             ) {
                 val selectedCategory: String = categoryList[position]
                 GlobalScope.launch {
-                    if (selectedCategory == "All") {
-                        expenseRepository.getAllExpenses()
+                    if (selectedCategory == "All Expenses") {
+                        expenseListViewModel.getAllExpenses()
                     } else {
-                        expenseRepository.getExpensesByCategory(selectedCategory)
+                        expenseListViewModel.getExpensesByCategory(selectedCategory)
                     }
                 }
             }

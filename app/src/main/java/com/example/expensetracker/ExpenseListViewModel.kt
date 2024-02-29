@@ -19,8 +19,33 @@ class ExpenseListViewModel: ViewModel()  {
 
     private val expenseRepository = ExpenseRepository.get()
 
-
     init {
+        viewModelScope.launch {
+            val response = withContext(Dispatchers.IO) {
+                expenseRepository.getAllExpenses()
+            }
+            val expensesList = response
+            if (expensesList != null) {
+                // Update LiveData on the main thread
+                _expenses.postValue(expensesList)
+            }
+        }
+    }
+
+    fun getExpensesByCategory(type: String) {
+        viewModelScope.launch {
+            val response = withContext(Dispatchers.IO) {
+                expenseRepository.getExpensesByCategory(type)
+            }
+            val expensesList = response
+            if (expensesList != null) {
+                // Update LiveData on the main thread
+                _expenses.postValue(expensesList)
+            }
+        }
+    }
+
+    fun getAllExpenses() {
         viewModelScope.launch {
             val response = withContext(Dispatchers.IO) {
                 expenseRepository.getAllExpenses()
