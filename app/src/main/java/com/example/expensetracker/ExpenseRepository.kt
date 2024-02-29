@@ -11,7 +11,7 @@ import java.util.UUID
 
 private const val DATABASE_NAME = "expenses.db"
 
-class ExpenseRepository private constructor(
+class ExpenseRepository constructor(
     context: Context,
     private val coroutineScope: CoroutineScope = GlobalScope
 ) {

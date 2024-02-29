@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.expensetracker.databinding.FragmentExpenseListBinding
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
@@ -47,7 +48,7 @@ class ExpenseListFragment: Fragment() {
                 id: Long
             ) {
                 val selectedCategory: String = categoryList[position]
-                lifecycleScope.launch {
+                GlobalScope.launch {
                     if (selectedCategory == "All") {
                         expenseRepository.getAllExpenses()
                     } else {
