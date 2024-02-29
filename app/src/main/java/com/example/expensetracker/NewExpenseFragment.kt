@@ -77,5 +77,4 @@ class NewExpenseFragment: Fragment() {
         }
         return binding.root
     }
-
 }
