@@ -1,6 +1,5 @@
 package com.example.expensetracker
 
-import android.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
@@ -8,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Button
 import androidx.lifecycle.ViewModel
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
 
 class ExpenseListFragment: Fragment() {
     private var _binding: FragmentExpenseListBinding? = null
+
 
     val expenseRepository = ExpenseRepository.get()
     private val binding
@@ -39,7 +40,7 @@ class ExpenseListFragment: Fragment() {
 
         val categorySpinner = binding.ExpenseCategories
         val categoryList = listOf("All Expenses","Food", "Entertainment", "Housing", "Utilities", "Fuel", "Automotive", "Misc")
-        val spinnerAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_dropdown_item, categoryList)
+        val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, categoryList)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         categorySpinner.adapter = spinnerAdapter
 
@@ -63,7 +64,14 @@ class ExpenseListFragment: Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
-
+        }
+        val newExpense = binding.root.findViewById<Button>(R.id.NewExpense)
+        newExpense.setOnClickListener {
+            val newExpenseFragment = NewExpenseFragment()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragment_container, newExpenseFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
         }
         binding.ExpenseRecyclerView.adapter = adapter
         expenseListViewModel.expenses.observe(viewLifecycleOwner) { expenseList ->

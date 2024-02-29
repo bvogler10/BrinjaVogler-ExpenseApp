@@ -6,6 +6,15 @@
     android:layout_height="wrap_content"
     tools:context=".ExpenseListFragment">
 
+    <Button
+        android:id="@+id/NewExpense"
+        android:padding="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New"
+        app:layout_constraintBottom_toTopOf="@+id/ExpenseRecyclerView"
+        app:layout_constraintEnd_toStartOf="@+id/ExpenseCategories"
+        app:layout_constraintStart_toStartOf="parent" />
     <Spinner
         android:id="@+id/ExpenseCategories"
         android:layout_width="0dp"
@@ -15,7 +24,7 @@
         app:layout_constraintBottom_toTopOf="@+id/ExpenseRecyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/NewExpense"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
@@ -25,12 +34,13 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ExpenseCategories"
         app:layout_constraintVertical_bias="1.0"
         tools:ignore="MissingConstraints"
         tools:listitem="@layout/list_item_expense" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
