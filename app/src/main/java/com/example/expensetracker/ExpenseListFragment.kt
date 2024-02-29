@@ -37,7 +37,6 @@ class ExpenseListFragment: Fragment() {
         binding.ExpenseRecyclerView.layoutManager = LinearLayoutManager(context)
         val adapter = ExpenseListAdapter(emptyList())
 
-
         val categorySpinner = binding.ExpenseCategories
         val categoryList = listOf("All Expenses","Food", "Entertainment", "Housing", "Utilities", "Fuel", "Automotive", "Misc")
         val spinnerAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_dropdown_item, categoryList)
@@ -52,7 +51,7 @@ class ExpenseListFragment: Fragment() {
                 id: Long
             ) {
                 val selectedCategory: String = categoryList[position]
-                GlobalScope.launch {
+                lifecycleScope.launch {
                     if (selectedCategory == "All Expenses") {
                         expenseListViewModel.getAllExpenses()
                     } else {
